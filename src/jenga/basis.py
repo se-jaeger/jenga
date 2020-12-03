@@ -32,7 +32,7 @@ class BinaryClassificationTask(ABC):
         # Fix random seeds for reproducibility
         random.seed(seed)
         np.random.seed(seed)
-        tf.set_random_seed(seed)
+        tf.random.set_seed(seed)
 
         # Train and test data and labels
         self.train_data = train_data
