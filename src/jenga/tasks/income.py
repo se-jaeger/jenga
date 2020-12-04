@@ -16,7 +16,7 @@ class IncomeEstimationTask(BinaryClassificationTask):
     def __init__(self, seed, ignore_incomplete_records_for_training=False):
 
         columns = ['workclass', 'occupation', 'marital_status', 'education', 'hours_per_week', 'age']
-        all_data = pd.read_csv('data/income/adult.csv', na_values='?')
+        all_data = pd.read_csv('../data/income/adult.csv', na_values='?')
 
         train_split, test_split = train_test_split(all_data, test_size=0.2)
 
