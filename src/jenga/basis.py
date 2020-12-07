@@ -10,17 +10,18 @@ from sklearn.metrics import roc_auc_score
 # Base class for binary classification tasks, including training data, test data, a baseline model and scoring
 class BinaryClassificationTask(ABC):
 
-    def __init__(self,
-                 seed,
-                 train_data,
-                 train_labels,
-                 test_data,
-                 test_labels,
-                 categorical_columns=None,
-                 numerical_columns=None,
-                 text_columns=None,
-                 is_image_data=False
-                 ):
+    def __init__(
+        self,
+        seed,
+        train_data,
+        train_labels,
+        test_data,
+        test_labels,
+        categorical_columns=None,
+        numerical_columns=None,
+        text_columns=None,
+        is_image_data=False
+    ):
 
         if numerical_columns is None:
             numerical_columns = []
@@ -97,17 +98,18 @@ class TabularCorruption(DataCorruption):
             perc_lower_start = np.random.randint(0, len(data) - n_values_to_discard)
             perc_idx = range(perc_lower_start, perc_lower_start + n_values_to_discard)
 
+            # Not At Random
+            if self.sampling.endswith('NAR'):
+                # pick a random percentile of values in this column
+                rows = data[self.column].sort_values().iloc[perc_idx].index
+
             # At Random
-            if self.sampling.endswith('AR'):
+            elif self.sampling.endswith('AR'):
                 depends_on_col = np.random.choice(list(set(data.columns) - {self.column}))
                 # pick a random percentile of values in other column
                 rows = data[depends_on_col].sort_values().iloc[perc_idx].index
 
-            # Not At Random
-            elif self.sampling.endswith('NAR'):
-                # pick a random percentile of values in this column
-                rows = data[self.column].sort_values().iloc[perc_idx].index
         else:
-            ValueError('sampling type not recognized')
+            ValueError(f"sampling type '{self.sampling}' not recognized")
 
         return rows
